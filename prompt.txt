@@ -1,0 +1,51 @@
+Bạn là một Chuyên gia Kiểm thử phần mềm (QA/QC Engineer) và là Lập trình viên Java Senior. Hãy giúp tôi hoàn thành bài tập thiết kế Test Case, chuẩn bị Mock Data và viết Unit Test cho chức năng Đăng ký tài khoản (Register Account) dựa trên thông tin nghiệp vụ dưới đây.
+
+---
+### 1. NGỮ CẢNH NGHIỆP VỤ & QUY TẮC VALIDATE (VIỆT NAM STYLES)
+Hệ thống cần kiểm tra các trường thông tin đầu vào từ Request Body khi đăng ký tài khoản với các ràng buộc sau:
+1. fullName: 
+   - Không được trống, từ 2 đến 50 ký tự.
+   - Chỉ chứa chữ cái (bao gồm chữ tiếng Việt có dấu) và khoảng trắng. Không chứa số hoặc ký tự đặc biệt.
+2. email: 
+   - Không được trống, đúng định dạng email tiêu chuẩn (ví dụ: abc@domain.com).
+   - Phải là duy nhất (Unique) trong cơ sở dữ liệu.
+3. phone: 
+   - Không được trống, phải gồm đúng 10 chữ số.
+   - Phải bắt đầu bằng các đầu số nhà mạng Việt Nam hợp lệ (03, 05, 07, 08, 09).
+   - Phải là duy nhất (Unique).
+4. citizenId (CCCD): 
+   - Không được trống, phải gồm đúng 12 chữ số (định dạng CCCD Việt Nam).
+   - Phải là duy nhất (Unique).
+
+---
+### 2. MÃ NGUỒN CẦN KIỂM THỬ (SERVICE / CONTROLLER LAYER)
+đây là srouce code spring boot: "ss12-srouce-code"
+
+---
+### 3. YÊU CẦU ĐẦU RA (OUTPUT REQUIREMENT)
+Hãy phân tách và xuất ra câu trả lời theo đúng 3 phần rõ rệt sau để tôi tách file nộp bài:
+
+#### PHẦN 1: BẢNG DANH SÁCH TEST CASE (MARKDOWN TABLE)
+Hãy thiết kế một bảng danh sách Test Case toàn diện, bao gồm đầy đủ các cột: Test Case ID, Component/Field, Test Description, Test Data, Expected Result, Test Type (Positive / Negative / Boundary).
+Yêu cầu bao phủ ít nhất:
+- Positive cases: Nhập đúng, đủ, email/phone/citizenId chưa tồn tại.
+- Negative cases: Trống dữ liệu, sai định dạng chữ/số/ký tự đặc biệt, trùng lặp (Duplicate) dữ liệu trong DB.
+- Boundary cases: Tên quá ngắn (1 ký tự), tên quá dài (51 ký tự), số điện thoại/CCCD thiếu số hoặc thừa số.
+
+#### PHẦN 2: DỮ LIỆU KIỂM THỬ (MOCK DATA CSV)
+Sinh chính xác 50 dòng dữ liệu giả lập dưới định dạng CSV (gồm dòng header: fullName,email,phone,citizenId).
+Ràng buộc dữ liệu:
+- Tên phải là tên người Việt Nam ngẫu nhiên (ví dụ: Nguyễn Văn A, Trần Thị B...).
+- Email ngẫu nhiên hợp lệ.
+- Số điện thoại ngẫu nhiên nhưng bắt đầu bằng 03, 05, 07, 08, 09 và đúng 10 số.
+- Căn cước công dân (citizenId) ngẫu nhiên đúng 12 số.
+- Đảm bảo có cả dữ liệu hợp lệ và một vài dòng không hợp lệ cố ý (để trống hoặc sai format) để test hệ thống. Hãy đưa toàn bộ vào trong một code block duy nhất để tôi tiện copy tạo file .csv.
+
+#### PHẦN 3: MÃ NGUỒN JUNIT TEST CLASS
+Viết mã nguồn Java cho class Unit Test bằng cách sử dụng JUnit 5 và Mockito.
+Yêu cầu kỹ thuật:
+- Mock các phụ thuộc (Dependency) như Repository bằng `@Mock`.
+- Tiêm mock vào Service bằng `@InjectMocks`.
+- Viết các test method rõ ràng đại diện cho các kịch bản thành công (thương lượng Mockito trả về empty khi check trùng) và thất bại (thương lượng Mockito ném ra Exception do trùng lặp hoặc ValidationException).
+- Sử dụng các câu lệnh khẳng định (`assertNotNull`, `assertEquals`, `assertThrows`) để kiểm tra kết quả trả về hoặc Exception được ném ra.
+- Mã nguồn phải chuẩn hóa, sạch sẽ và có comment giải thích ngắn gọn luồng xử lý dữ liệu (Data flow).
